@@ -1,33 +1,30 @@
 #include "commonHeader.h"
 
-Block blockData[BLOCK_CNT];
-BlockDataCnt testBlock = test;
-
 //
 //画像を読み込む関数
 //
-void loadImg(char* imgName, Img* setTo)
+void loadImg(char* imgName, Img* loadTo)
 {
-	setTo->img = pngBind(imgName, PNG_NOMIPMAP, PNG_ALPHA,
-								 &setTo->imgInfo, GL_CLAMP, GL_NEAREST, GL_NEAREST);
-	if(setTo->img <= 0)
-	{
-		printf("\"%s\" is not found\n", imgName);
-	}
-	if(setTo->imgInfo.Width != IMG_SIZE)
-	{
-		printf("width of \"%s\" is not 48 pixel\n");
-	}
-	if(setTo->imgInfo.Height != IMG_SIZE)
-	{
-		printf("height of \"%s\" is not 48 pixel\n");
-	}
+  loadTo->img = pngBind(imgName, PNG_NOMIPMAP, PNG_ALPHA,
+                 &loadTo->imgInfo, GL_CLAMP, GL_NEAREST, GL_NEAREST);
+  if(loadTo->img == 0)
+  {
+    printf("\"%s\" is not found\n", imgName);
+  }
+  if(loadTo->imgInfo.Width != IMG_SIZE)
+  {
+    printf("width of \"%s\" is not %d pixel\n", imgName, IMG_SIZE);
+  }
+  if(loadTo->imgInfo.Height != IMG_SIZE)
+  {
+    printf("height of \"%s\" is not %d pixel\n", imgName, IMG_SIZE);
+  }
 }
 
 //
 //画像を表示する関数
 //
-void putImg(Img *imgToDisp, int x, int y)
+void putImg(Img* imgToPut, int x, int y)
 {
   int w, h;  //  テクスチャの幅と高さ
 
@@ -36,7 +33,7 @@ void putImg(Img *imgToDisp, int x, int y)
 
   glPushMatrix();
   glEnable(GL_TEXTURE_2D);
-  glBindTexture(GL_TEXTURE_2D, imgToDisp->img);
+  glBindTexture(GL_TEXTURE_2D, imgToPut->img);
   glColor4ub(255, 255, 255, 255);
 
   glBegin(GL_QUADS);  //  幅w, 高さhの四角形
@@ -59,43 +56,43 @@ void putImg(Img *imgToDisp, int x, int y)
   glPopMatrix();
 }
 
-//
-//ブロックの三面の画像を読み込む関数
-//
-void loadBlock(char* blockName, Block *setTo)
+void loadMapImage(Map* loadTo)
 {
-	char imgName[32];
-	sprintf(imgName, "./resource/%s_over.png", blockName);
-	loadImg(imgName, &setTo->over);
-	sprintf(imgName, "./resource/%s_left.png", blockName);
-	loadImg(imgName, &setTo->left);
-	sprintf(imgName, "./resource/%s_right.png", blockName);
-	loadImg(imgName, &setTo->right);
+  int i, j;
+
+  for(i = 0; i < MAP_ALL_X_RANGE; i ++)
+  {
+    for(j = 0; j < MAP_ALL_Y_RANGE; j ++)
+    {
+      if(loadTo->cell[i][j].isWall == 1)
+      {
+        loadImg("./resource/wall.png", &loadTo->cell[i][j].img);
+      }
+      else
+      {
+        loadImg("./resource/floor.png", &loadTo->cell[i][j].img);
+      }
+    }
+  }
 }
 
 //
-//すべてのブロックの画像を読み込む関数
+//指定した場所周辺のマップを表示する関数
 //
-void loadAllBlockData()
+void putMap(Map* mapToPut, int centerX, int centerY)
 {
-	loadBlock("test", &blockData[testBlock]);
-}
+  int i, j;
 
-//
-//ブロックを表示する関数
-//
-void putBlock(Block *blockToDisp, int x, int y, int whichSurfaceIsDisp)
-{
-	if((whichSurfaceIsDisp & DISP_OVER) != 0)
-	{
-		putImg(&blockToDisp->over, x, y);
-	}
-	if((whichSurfaceIsDisp & DISP_LEFT) != 0)
-	{
-		putImg(&blockToDisp->left, x, y);
-	}
-	if((whichSurfaceIsDisp & DISP_RIGHT) != 0)
-	{
-		putImg(&blockToDisp->right, x, y);
-	}
+  for(i = 0; i < MAP_DISP_X_RANGE; i ++)
+  {
+    for(j = 0; j < MAP_DISP_Y_RANGE; j ++)
+    {
+      if(centerX / IMG_SIZE + i - MAP_DISP_X_RANGE / 2 >= 0 && centerX / IMG_SIZE + i - MAP_DISP_X_RANGE / 2 < MAP_ALL_X_RANGE
+        && centerY / IMG_SIZE + j - MAP_DISP_Y_RANGE / 2 >= 0 && centerY / IMG_SIZE + j - MAP_DISP_Y_RANGE / 2 < MAP_ALL_Y_RANGE)
+      {
+        putImg(&mapToPut->cell[centerX / IMG_SIZE + i - MAP_DISP_X_RANGE / 2][centerY / IMG_SIZE + j - MAP_DISP_Y_RANGE / 2].img
+          , i * IMG_SIZE - centerX % IMG_SIZE, j * IMG_SIZE - centerY % IMG_SIZE);
+      }
+    }
+  }
 }

@@ -1,11 +1,11 @@
 #include "commonHeader.h"
-
 //
 //  ウィンドウの表示内容を更新する
 //
 void display(void)
 {
   glClear(GL_COLOR_BUFFER_BIT);
+  putMap(&gameMap, 0, 0);
   glFlush();
 }
 
