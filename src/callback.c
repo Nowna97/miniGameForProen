@@ -5,8 +5,14 @@
 void display(void)
 {
   glClear(GL_COLOR_BUFFER_BIT);
-  putMap(&gameMap, 0, 0);
+  playerCharacterMove(&gameMap, &playerCharacter);
+  enemyMove(&pushingSpace, &enemyCharacter, &playerCharacter);
+  putMap(&gameMap, IMG_SIZE + playerCharacter.x, IMG_SIZE + playerCharacter.y);
+  putCharacter(&playerCharacter, IMG_SIZE + playerCharacter.x, IMG_SIZE + playerCharacter.y);
+  putEnemy(&enemyCharacter, IMG_SIZE + playerCharacter.x, IMG_SIZE + playerCharacter.y);
+  printf("%d\n", getDistance(&playerCharacter, &enemyCharacter[0]) / IMG_SIZE);
   glFlush();
+  glutSwapBuffers();
 }
 
 //
@@ -29,5 +35,39 @@ void reshape(int w, int h)
 void timer(int t)
 {
     glutPostRedisplay();
-    glutTimerFunc(1000, timer, 0);
+    glutTimerFunc(100, timer, 0);
+}
+
+void keyboard(unsigned char key, int x, int y)
+{
+  switch (key)
+  {
+    case 's':
+      playerCharacter.direction = 0;
+      playerCharacter.whereGoing = 's';
+      break;
+    case 'a':
+      playerCharacter.direction = 1;
+      playerCharacter.whereGoing = 'a';
+      break;
+    case 'w':
+      playerCharacter.direction = 2;
+      playerCharacter.whereGoing = 'w';
+      break;
+    case 'd':
+      playerCharacter.direction = 3;
+      playerCharacter.whereGoing = 'd';
+      break;
+    case ' ':
+      pushingSpace = !pushingSpace;
+      break;
+  }
+}
+
+void keyboardUp(unsigned char key, int x, int y)
+{
+  if(playerCharacter.whereGoing == key)
+  {
+    playerCharacter.whereGoing = 0;
+  }
 }

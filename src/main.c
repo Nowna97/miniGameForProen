@@ -5,8 +5,8 @@ int main(int argc, char **argv)
   glutInit(&argc, argv);
   glutInitWindowSize(WINDOW_WIDTH, WINDOW_HEIGHT);
   glutCreateWindow("miniGame");
-  glutInitDisplayMode(GLUT_RGBA | GLUT_ALPHA);
-  glClearColor(0, 0, 0, 1.0);
+  glutInitDisplayMode(GLUT_RGBA | GLUT_DOUBLE | GLUT_ALPHA);
+  glClearColor(255, 0, 0, 1.0);
 
   glEnable(GL_BLEND);
   glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
@@ -15,7 +15,9 @@ int main(int argc, char **argv)
   //  コールバック関数の登録
   glutDisplayFunc(display);
   glutReshapeFunc(reshape);
-  glutTimerFunc(1000, timer, 0);
+  glutKeyboardFunc(keyboard);
+  glutKeyboardUpFunc(keyboardUp);
+  glutTimerFunc(100, timer, 0);
 
   initGame();
 

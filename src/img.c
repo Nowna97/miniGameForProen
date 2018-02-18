@@ -56,6 +56,9 @@ void putImg(Img* imgToPut, int x, int y)
   glPopMatrix();
 }
 
+//
+//マップ全体の画像を読み込む関数
+//
 void loadMapImage(Map* loadTo)
 {
   int i, j;
@@ -83,9 +86,9 @@ void putMap(Map* mapToPut, int centerX, int centerY)
 {
   int i, j;
 
-  for(i = 0; i < MAP_DISP_X_RANGE; i ++)
+  for(i = 0; i < MAP_DISP_X_RANGE + 1; i ++)
   {
-    for(j = 0; j < MAP_DISP_Y_RANGE; j ++)
+    for(j = 0; j < MAP_DISP_Y_RANGE + 1; j ++)
     {
       if(centerX / IMG_SIZE + i - MAP_DISP_X_RANGE / 2 >= 0 && centerX / IMG_SIZE + i - MAP_DISP_X_RANGE / 2 < MAP_ALL_X_RANGE
         && centerY / IMG_SIZE + j - MAP_DISP_Y_RANGE / 2 >= 0 && centerY / IMG_SIZE + j - MAP_DISP_Y_RANGE / 2 < MAP_ALL_Y_RANGE)
@@ -93,6 +96,49 @@ void putMap(Map* mapToPut, int centerX, int centerY)
         putImg(&mapToPut->cell[centerX / IMG_SIZE + i - MAP_DISP_X_RANGE / 2][centerY / IMG_SIZE + j - MAP_DISP_Y_RANGE / 2].img
           , i * IMG_SIZE - centerX % IMG_SIZE, j * IMG_SIZE - centerY % IMG_SIZE);
       }
+    }
+  }
+}
+
+//
+//プレイヤーキャラクターの四方向分の画像を読み込む関数
+//
+void loadCharacterImage(char* characterName, Character* loadTo)
+{
+  char fileName[(int)strlen(characterName) + 21];
+
+  sprintf(fileName, "./resource/%s_under.png", characterName);
+  loadImg(fileName, &loadTo->img[0]);
+  sprintf(fileName, "./resource/%s_left.png", characterName);
+  loadImg(fileName, &loadTo->img[1]);
+  sprintf(fileName, "./resource/%s_over.png", characterName);
+  loadImg(fileName, &loadTo->img[2]);
+  sprintf(fileName, "./resource/%s_right.png", characterName);
+  loadImg(fileName, &loadTo->img[3]);
+}
+
+//
+//プレイヤーキャラクターの画像を今いる座標に表示する関数
+//
+void putCharacter(Character* characterToPut, int centerX, int centerY)
+{
+  putImg(&characterToPut->img[characterToPut->direction]
+    , MAP_DISP_X_RANGE / 2 * IMG_SIZE + characterToPut->x - centerX
+    , MAP_DISP_X_RANGE / 2 * IMG_SIZE + characterToPut->y - centerY);
+}
+
+void putEnemy(Character* enemyToPut, int centerX, int centerY)
+{
+  int i;
+
+  for(i = 0; i < ENEMY_NUM; i ++)
+  {
+    if(MAP_DISP_X_RANGE / 2 * IMG_SIZE + enemyToPut[i].x - centerX >= 0 - IMG_SIZE
+      && MAP_DISP_X_RANGE / 2 * IMG_SIZE + enemyToPut[i].x - centerX < WINDOW_WIDTH
+      && MAP_DISP_X_RANGE / 2 * IMG_SIZE + enemyToPut[i].y - centerY >= 0 - IMG_SIZE
+      && MAP_DISP_X_RANGE / 2 * IMG_SIZE + enemyToPut[i].y - centerY < WINDOW_HEIGHT)
+    {
+      putCharacter(&enemyToPut[i], centerX, centerY);
     }
   }
 }
