@@ -1,13 +1,5 @@
 #include "commonHeader.h"
 
-void initGame(void)
-{
-  pushingSpace = 0;
-  initMap(&gameMap);
-  initPlayerCharacter(&playerCharacter);
-  initEnemy(&enemyCharacter);
-}
-
 void initMap(Map* init)
 {
   int i, j;
@@ -175,11 +167,10 @@ void initEnemy(Character* init)
   {
     init[i].x = MAP_ALL_X_RANGE / 6 * (1 + ((i + 1) % 3 * 2)) * IMG_SIZE;
     init[i].y = MAP_ALL_Y_RANGE / 6 * (1 + ((i + 1) / 3 * 2)) * IMG_SIZE;
-    printf("%d %d\n", init[i].x, init[i].y);
     init[i].direction = 0;
     init[i].whereGoing = 0;
 
-    loadCharacterImage("playerCharacter", &init[i]);
+    loadCharacterImage("enemyCharacter", &init[i]);
   }
 }
 
@@ -328,4 +319,59 @@ int getDistance(Character* character, Character* enemy)
   rtn = (int)sqrt((double)(xDistance * xDistance + yDistance * yDistance));
 
   return rtn;
+}
+
+void dispStartDisplay(Img* messageImg, Img* titleImg, Map* map)
+{
+  Img message, title;
+
+  putMap(map, WINDOW_WIDTH / 2, WINDOW_HEIGHT / 2);
+
+  putImg(messageImg, WINDOW_WIDTH / 2 - messageImg->imgInfo.Width / 2, WINDOW_HEIGHT - 100, 255);
+
+  putImg(titleImg, WINDOW_WIDTH / 2 - titleImg->imgInfo.Width / 2, 100, 255);
+}
+
+void dispGameOverDisplay(Img* messageImg, Img* gameOverImg, Map* map)
+{
+  Img message, gameOver;
+
+  putMap(map, WINDOW_WIDTH / 2, WINDOW_HEIGHT / 2);
+
+  putImg(messageImg, WINDOW_WIDTH / 2 - messageImg->imgInfo.Width / 2, WINDOW_HEIGHT - 100, 255);
+
+  putImg(gameOverImg, WINDOW_WIDTH / 2 - gameOverImg->imgInfo.Width / 2, 100, 255);
+}
+
+void dispGameClearDisplay(Img* messageImg, Img* gameClearImg, Map* map)
+{
+  putMap(map, WINDOW_WIDTH / 2, WINDOW_HEIGHT / 2);
+
+  putImg(messageImg, WINDOW_WIDTH / 2 - messageImg->imgInfo.Width / 2, WINDOW_HEIGHT - 100, 255);
+
+  putImg(gameClearImg, WINDOW_WIDTH / 2 - gameClearImg->imgInfo.Width / 2, 100, 255);
+}
+
+int  isCleared(Character* player)
+{
+  int rtn = 0;
+
+  if(player->x >= (MAP_ALL_X_RANGE - 2) * IMG_SIZE && player->y >= (MAP_ALL_Y_RANGE - 2) * IMG_SIZE)
+  {
+    rtn = 1;
+  }
+
+  return rtn;
+}
+
+void dispFuel(int fuelNum)
+{
+  int devide;
+  glColor3ub(255, 255, 255);
+  glRasterPos2i(WINDOW_WIDTH - 18 * 4, WINDOW_WIDTH - 18 * 2);
+
+  for(devide = 100; devide > 0; devide = devide / 10)
+  {
+    glutBitmapCharacter(GLUT_BITMAP_9_BY_15, (fuelNum / devide) % 10 + '0');
+  }
 }

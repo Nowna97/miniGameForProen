@@ -11,30 +11,22 @@ void loadImg(char* imgName, Img* loadTo)
   {
     printf("\"%s\" is not found\n", imgName);
   }
-  if(loadTo->imgInfo.Width != IMG_SIZE)
-  {
-    printf("width of \"%s\" is not %d pixel\n", imgName, IMG_SIZE);
-  }
-  if(loadTo->imgInfo.Height != IMG_SIZE)
-  {
-    printf("height of \"%s\" is not %d pixel\n", imgName, IMG_SIZE);
-  }
 }
 
 //
 //画像を表示する関数
 //
-void putImg(Img* imgToPut, int x, int y)
+void putImg(Img* imgToPut, int x, int y, int transparency)
 {
   int w, h;  //  テクスチャの幅と高さ
 
-  w = IMG_SIZE;   //  テクスチャの幅と高さを取得する
-  h = IMG_SIZE;
+  w = imgToPut->imgInfo.Width;   //  テクスチャの幅と高さを取得する
+  h = imgToPut->imgInfo.Height;
 
   glPushMatrix();
   glEnable(GL_TEXTURE_2D);
   glBindTexture(GL_TEXTURE_2D, imgToPut->img);
-  glColor4ub(255, 255, 255, 255);
+  glColor4ub(255, 255, 255, transparency);
 
   glBegin(GL_QUADS);  //  幅w, 高さhの四角形
 
@@ -94,7 +86,7 @@ void putMap(Map* mapToPut, int centerX, int centerY)
         && centerY / IMG_SIZE + j - MAP_DISP_Y_RANGE / 2 >= 0 && centerY / IMG_SIZE + j - MAP_DISP_Y_RANGE / 2 < MAP_ALL_Y_RANGE)
       {
         putImg(&mapToPut->cell[centerX / IMG_SIZE + i - MAP_DISP_X_RANGE / 2][centerY / IMG_SIZE + j - MAP_DISP_Y_RANGE / 2].img
-          , i * IMG_SIZE - centerX % IMG_SIZE, j * IMG_SIZE - centerY % IMG_SIZE);
+          , i * IMG_SIZE - centerX % IMG_SIZE, j * IMG_SIZE - centerY % IMG_SIZE, 255);
       }
     }
   }
@@ -124,7 +116,7 @@ void putCharacter(Character* characterToPut, int centerX, int centerY)
 {
   putImg(&characterToPut->img[characterToPut->direction]
     , MAP_DISP_X_RANGE / 2 * IMG_SIZE + characterToPut->x - centerX
-    , MAP_DISP_X_RANGE / 2 * IMG_SIZE + characterToPut->y - centerY);
+    , MAP_DISP_X_RANGE / 2 * IMG_SIZE + characterToPut->y - centerY, 255);
 }
 
 void putEnemy(Character* enemyToPut, int centerX, int centerY)

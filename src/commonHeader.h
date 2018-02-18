@@ -13,8 +13,8 @@
 #define MAP_ALL_X_RANGE 21
 #define MAP_ALL_Y_RANGE 21
 
-#define MAP_DISP_X_RANGE 13
-#define MAP_DISP_Y_RANGE 13
+#define MAP_DISP_X_RANGE 11
+#define MAP_DISP_Y_RANGE 11
 
 #define ROAD_WIDTH 1
 #define WALL_THICKNESS 1
@@ -28,6 +28,7 @@
 
 #define ENEMY_NUM 7
 #define FIELD_OF_VISION 5
+#define FUEL_MAX 750
 
 typedef struct
 {
@@ -55,11 +56,13 @@ typedef struct
   Img img[4];
 }Character;
 
+Img title, gameOver, gameClear, pushSpaceKey, bigFog[3], smallFog[3];
 int mode;
 Map gameMap;
 Character playerCharacter;
 Character enemyCharacter[ENEMY_NUM];
-int pushingSpace;
+int pushSpace;
+int fuel;
 
 //
 //callback.c
@@ -74,7 +77,7 @@ void keyboardUp(unsigned char, int, int);
 //img.c
 //
 void loadImg(char*, Img*);
-void putImg(Img*, int, int);
+void putImg(Img*, int, int, int);
 void loadMapImage(Map*);
 void putMap(Map*, int, int);
 void loadCharacterImage(char*, Character*);
@@ -84,7 +87,6 @@ void putEnemy(Character*, int, int);
 //
 //game.c
 //
-void initGame(void);
 void initMap(Map*);
 void initPlayerCharacter(Character*);
 void playerCharacterMove(Map*, Character*);
@@ -92,3 +94,8 @@ void initEnemy(Character*);
 void enemyMove(int*, Character*, Character*);
 int  isCollisioning(Character*, Character*);
 int  getDistance(Character*, Character*);
+void dispStartDisplay(Img*, Img*, Map*);
+void dispGameOverDisplay(Img*, Img*, Map*);
+void dispGameClearDisplay(Img*, Img*, Map*);
+int  isCleared(Character*);
+void dispFuel(int);

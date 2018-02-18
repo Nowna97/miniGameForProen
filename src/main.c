@@ -6,7 +6,7 @@ int main(int argc, char **argv)
   glutInitWindowSize(WINDOW_WIDTH, WINDOW_HEIGHT);
   glutCreateWindow("miniGame");
   glutInitDisplayMode(GLUT_RGBA | GLUT_DOUBLE | GLUT_ALPHA);
-  glClearColor(255, 0, 0, 1.0);
+  glClearColor(0, 0, 0, 1.0);
 
   glEnable(GL_BLEND);
   glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
@@ -19,8 +19,7 @@ int main(int argc, char **argv)
   glutKeyboardUpFunc(keyboardUp);
   glutTimerFunc(100, timer, 0);
 
-  initGame();
-
+  mode = 0;
   //  イベントループ突入
   glutMainLoop();
 
