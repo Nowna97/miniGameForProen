@@ -1,7 +1,7 @@
 #include "commonHeader.h"
 
 //
-//画像を読み込む関数
+//画像データ読込関数
 //
 void loadImg(char* imgName, Img* loadTo)
 {
@@ -14,13 +14,13 @@ void loadImg(char* imgName, Img* loadTo)
 }
 
 //
-//画像を表示する関数
+//画像表示関数
 //
 void putImg(Img* imgToPut, int x, int y, int transparency)
 {
-  int w, h;  //  テクスチャの幅と高さ
+  int w, h;
 
-  w = imgToPut->imgInfo.Width;   //  テクスチャの幅と高さを取得する
+  w = imgToPut->imgInfo.Width;
   h = imgToPut->imgInfo.Height;
 
   glPushMatrix();
@@ -28,7 +28,7 @@ void putImg(Img* imgToPut, int x, int y, int transparency)
   glBindTexture(GL_TEXTURE_2D, imgToPut->img);
   glColor4ub(255, 255, 255, transparency);
 
-  glBegin(GL_QUADS);  //  幅w, 高さhの四角形
+  glBegin(GL_QUADS);
 
   glTexCoord2i(0, 0);
   glVertex2i(x, y);
@@ -49,7 +49,7 @@ void putImg(Img* imgToPut, int x, int y, int transparency)
 }
 
 //
-//マップ全体の画像を読み込む関数
+//迷路全体の画像データ読込関数
 //
 void loadMapImage(Map* loadTo)
 {
@@ -59,7 +59,7 @@ void loadMapImage(Map* loadTo)
   {
     for(j = 0; j < MAP_ALL_Y_RANGE; j ++)
     {
-      if(loadTo->cell[i][j].isWall == 1)
+      if(loadTo->cell[i][j].isWall == 1 && (i != MAP_ALL_X_RANGE - 2 || j != MAP_ALL_Y_RANGE - 1))
       {
         loadImg("./resource/wall.png", &loadTo->cell[i][j].img);
       }
@@ -72,7 +72,7 @@ void loadMapImage(Map* loadTo)
 }
 
 //
-//指定した場所周辺のマップを表示する関数
+//迷路の画像表示関数
 //
 void putMap(Map* mapToPut, int centerX, int centerY)
 {
@@ -93,7 +93,7 @@ void putMap(Map* mapToPut, int centerX, int centerY)
 }
 
 //
-//プレイヤーキャラクターの四方向分の画像を読み込む関数
+//キャラクターの画像データ読込関数
 //
 void loadCharacterImage(char* characterName, Character* loadTo)
 {
@@ -110,7 +110,7 @@ void loadCharacterImage(char* characterName, Character* loadTo)
 }
 
 //
-//プレイヤーキャラクターの画像を今いる座標に表示する関数
+//キャラクターの画像表示関数
 //
 void putCharacter(Character* characterToPut, int centerX, int centerY)
 {
@@ -118,7 +118,9 @@ void putCharacter(Character* characterToPut, int centerX, int centerY)
     , MAP_DISP_X_RANGE / 2 * IMG_SIZE + characterToPut->x - centerX
     , MAP_DISP_X_RANGE / 2 * IMG_SIZE + characterToPut->y - centerY, 255);
 }
-
+//
+//敵の画像表示関数
+//
 void putEnemy(Character* enemyToPut, int centerX, int centerY)
 {
   int i;

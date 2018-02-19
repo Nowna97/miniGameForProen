@@ -1,5 +1,8 @@
 #include "commonHeader.h"
 
+//
+//迷路全体の初期化関数
+//
 void initMap(Map* init)
 {
   int i, j;
@@ -109,6 +112,9 @@ void initMap(Map* init)
   loadMapImage(init);
 }
 
+//
+//自機の初期化関数
+//
 void initPlayerCharacter(Character* init)
 {
   init->x = IMG_SIZE;
@@ -119,6 +125,9 @@ void initPlayerCharacter(Character* init)
   loadCharacterImage("playerCharacter", init);
 }
 
+//
+//自機の移動処理関数
+//
 void playerCharacterMove(Map* map, Character* character)
 {
   switch (character->whereGoing)
@@ -158,6 +167,9 @@ void playerCharacterMove(Map* map, Character* character)
   }
 }
 
+//
+//敵の初期化関数
+//
 void initEnemy(Character* init)
 {
   int i;
@@ -174,6 +186,9 @@ void initEnemy(Character* init)
   }
 }
 
+//
+//敵の移動処理関数
+//
 void enemyMove(int* flag, Character* enemy, Character* player)
 {
   int i, j;
@@ -274,6 +289,9 @@ void enemyMove(int* flag, Character* enemy, Character* player)
   }
 }
 
+//
+//自機と敵との接触判定関数
+//
 int isCollisioning(Character* character, Character* enemys)
 {
   int i;
@@ -293,6 +311,9 @@ int isCollisioning(Character* character, Character* enemys)
   return rtn;
 }
 
+//
+//自機と敵との距離取得関数
+//
 int getDistance(Character* character, Character* enemy)
 {
   int rtn;
@@ -321,6 +342,9 @@ int getDistance(Character* character, Character* enemy)
   return rtn;
 }
 
+//
+//スタート画面表示関数
+//
 void dispStartDisplay(Img* messageImg, Img* titleImg, Map* map)
 {
   Img message, title;
@@ -332,6 +356,9 @@ void dispStartDisplay(Img* messageImg, Img* titleImg, Map* map)
   putImg(titleImg, WINDOW_WIDTH / 2 - titleImg->imgInfo.Width / 2, 100, 255);
 }
 
+//
+//ゲームオーバー画面表示関数
+//
 void dispGameOverDisplay(Img* messageImg, Img* gameOverImg, Map* map)
 {
   Img message, gameOver;
@@ -343,6 +370,9 @@ void dispGameOverDisplay(Img* messageImg, Img* gameOverImg, Map* map)
   putImg(gameOverImg, WINDOW_WIDTH / 2 - gameOverImg->imgInfo.Width / 2, 100, 255);
 }
 
+//
+//クリア画面表示関数
+//
 void dispGameClearDisplay(Img* messageImg, Img* gameClearImg, Map* map)
 {
   putMap(map, WINDOW_WIDTH / 2, WINDOW_HEIGHT / 2);
@@ -352,6 +382,9 @@ void dispGameClearDisplay(Img* messageImg, Img* gameClearImg, Map* map)
   putImg(gameClearImg, WINDOW_WIDTH / 2 - gameClearImg->imgInfo.Width / 2, 100, 255);
 }
 
+//
+//クリア判定関数
+//
 int  isCleared(Character* player)
 {
   int rtn = 0;
@@ -364,6 +397,9 @@ int  isCleared(Character* player)
   return rtn;
 }
 
+//
+//残り燃料表示関数
+//
 void dispFuel(int fuelNum)
 {
   int devide;

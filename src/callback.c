@@ -1,6 +1,7 @@
 #include "commonHeader.h"
+
 //
-//  ウィンドウの表示内容を更新する
+//画面描画の際に呼び出されるコールバック関数
 //
 void display(void)
 {
@@ -14,16 +15,6 @@ void display(void)
       initPlayerCharacter(&playerCharacter);
       initEnemy(&enemyCharacter);
       mode = 1;
-      loadImg("./resource/pushSpaceKey.png", &pushSpaceKey);
-      loadImg("./resource/gameClear.png", &gameClear);
-      loadImg("./resource/gameOver.png", &gameOver);
-      loadImg("./resource/title.png", &title);
-      loadImg("./resource/bigFog1.png", &bigFog[0]);
-      loadImg("./resource/bigFog2.png", &bigFog[1]);
-      loadImg("./resource/bigFog3.png", &bigFog[2]);
-      loadImg("./resource/smallFog1.png", &smallFog[0]);
-      loadImg("./resource/smallFog2.png", &smallFog[1]);
-      loadImg("./resource/smallFog3.png", &smallFog[2]);
       break;
     case 1: //title
       dispStartDisplay(&pushSpaceKey, &title, &gameMap);
@@ -89,7 +80,7 @@ void display(void)
 }
 
 //
-//  ウィンドウのサイズ変更が発生したときに座標系を再設定する関数
+//ウィンドウサイズの変更の際に呼び出されるコールバック関数
 //
 void reshape(int w, int h)
 {
@@ -103,7 +94,7 @@ void reshape(int w, int h)
 }
 
 //
-//  タイマー割り込みで画面を描画し直す
+//タイマー割込で呼び出されるコールバック関数
 //
 void timer(int t)
 {
@@ -111,6 +102,9 @@ void timer(int t)
     glutTimerFunc(100, timer, 0);
 }
 
+//
+//キーが押された際に呼び出されるコールバック関数
+//
 void keyboard(unsigned char key, int x, int y)
 {
   switch (key)
@@ -137,6 +131,9 @@ void keyboard(unsigned char key, int x, int y)
   }
 }
 
+//
+//キーが離された際に呼び出されるコールバック関数
+//
 void keyboardUp(unsigned char key, int x, int y)
 {
   if(playerCharacter.whereGoing == key)

@@ -13,9 +13,9 @@ HEADERS = $(SRCDIR)/commonHeader.h
 SRCS = $(wildcard $(SRCDIR)/*.c)
 OBJS = $(patsubst $(SRCDIR)/%.c,$(OUTDIR)/%.o,$(SRCS))
 
-ICON_RESOURCE = $(RCDIR)/windowIcon.rc
-ICON_ICO = $(patsubst $(RCDIR)/%.rc,$(RCDIR)/%.ico,$(ICON_RESOURCE))
-ICON_OBJS = $(patsubst $(RCDIR)/%.rc,$(OUTDIR)/%.o,$(ICON_RESOURCE))
+ICON_RESOURCE = $(SRCDIR)/windowIcon.rc
+ICON_ICO = $(patsubst $(SRCDIR)/%.rc,$(RCDIR)/%.ico,$(ICON_RESOURCE))
+ICON_OBJS = $(patsubst $(SRCDIR)/%.rc,$(OUTDIR)/%.o,$(ICON_RESOURCE))
 
 CC = gcc
 CCFLAGS = -Wall -I/usr/include/opengl

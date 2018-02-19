@@ -20,6 +20,18 @@ int main(int argc, char **argv)
   glutTimerFunc(100, timer, 0);
 
   mode = 0;
+
+  loadImg("./resource/pushSpaceKey.png", &pushSpaceKey);
+  loadImg("./resource/gameClear.png", &gameClear);
+  loadImg("./resource/gameOver.png", &gameOver);
+  loadImg("./resource/title.png", &title);
+  loadImg("./resource/bigFog1.png", &bigFog[0]);
+  loadImg("./resource/bigFog2.png", &bigFog[1]);
+  loadImg("./resource/bigFog3.png", &bigFog[2]);
+  loadImg("./resource/smallFog1.png", &smallFog[0]);
+  loadImg("./resource/smallFog2.png", &smallFog[1]);
+  loadImg("./resource/smallFog3.png", &smallFog[2]);
+  
   //  イベントループ突入
   glutMainLoop();
 
